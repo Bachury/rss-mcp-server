@@ -1,0 +1,79 @@
+{
+  "feeds": [
+    {
+      "name": "机器之心",
+      "category": "国内AI垂直",
+      "url": "https://decemberpei.cyou/rssbox/wechat-jiqizhixin.xml"
+    },
+    {
+      "name": "AI前线 InfoQ",
+      "category": "国内AI垂直",
+      "url": "https://www.infoq.cn/feed/ai"
+    },
+    {
+      "name": "极客公园",
+      "category": "国内AI垂直",
+      "url": "https://www.geekpark.net/rss"
+    },
+    {
+      "name": "OpenAI Blog",
+      "category": "大厂官方博客",
+      "url": "https://openai.com/news/rss.xml"
+    },
+    {
+      "name": "Google DeepMind",
+      "category": "大厂官方博客",
+      "url": "https://deepmind.google/blog/rss.xml"
+    },
+    {
+      "name": "Anthropic",
+      "category": "大厂官方博客",
+      "url": "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_news.xml"
+    },
+    {
+      "name": "Hugging Face Blog",
+      "category": "大厂官方博客",
+      "url": "https://huggingface.co/blog/feed.xml"
+    },
+    {
+      "name": "The Decoder",
+      "category": "大厂官方博客",
+      "url": "https://the-decoder.com/feed/"
+    },
+    {
+      "name": "MIT 技术评论",
+      "category": "综合科技资讯",
+      "url": "https://www.technologyreview.com/feed/"
+    },
+    {
+      "name": "TechCrunch AI",
+      "category": "综合科技资讯",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/"
+    },
+    {
+      "name": "The Verge",
+      "category": "综合科技资讯",
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+    },
+    {
+      "name": "IT之家",
+      "category": "综合科技资讯",
+      "url": "https://www.ithome.com/rss/"
+    },
+    {
+      "name": "arXiv cs.AI",
+      "category": "前沿论文与社区",
+      "url": "https://rss.arxiv.org/rss/cs.AI"
+    },
+    {
+      "name": "Hacker News AI",
+      "category": "前沿论文与社区",
+      "url": "https://hnrss.org/newest?q=AI"
+    },
+    {
+      "name": "GitHub Trending Python",
+      "category": "前沿论文与社区",
+      "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/python.xml"
+    }
+  ]
+}
