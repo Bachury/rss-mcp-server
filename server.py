@@ -1,6 +1,7 @@
 """RSS MCP Server - Fetch and parse RSS feeds via MCP tools."""
 
 import json
+import asyncio
 from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
@@ -59,5 +60,14 @@ async def list_feeds() -> str:
     return json.dumps(feeds, ensure_ascii=False, indent=2)
 
 
+# 修复：Horizon 兼容启动（解决 asyncio 冲突）
 if __name__ == "__main__":
-    mcp.run(transport="sse")
+    try:
+        # 标准运行方式
+        mcp.run(transport="sse")
+    except RuntimeError as e:
+        if "Already running asyncio" in str(e):
+            # 环境已有循环，强制安全启动
+            asyncio.run(mcp.run_server(transport="sse"))
+        else:
+            raise
