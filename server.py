@@ -1,5 +1,8 @@
 """RSS MCP Server - Fetch and parse RSS feeds via MCP tools."""
 
+import nest_asyncio
+nest_asyncio.apply()
+
 import json
 from typing import Optional
 
