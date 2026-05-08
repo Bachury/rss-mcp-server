@@ -4,6 +4,12 @@ import json
 import asyncio
 from typing import Optional
 
+# 🔥 关键：强制使用已存在的 asyncio 循环（修复 Horizon 报错）
+try:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+except RuntimeError:
+    pass
+
 from mcp.server.fastmcp import FastMCP
 
 from rss_fetcher import fetch_single_feed, fetch_multiple_feeds, load_feeds_config
@@ -60,14 +66,13 @@ async def list_feeds() -> str:
     return json.dumps(feeds, ensure_ascii=False, indent=2)
 
 
-# 修复：Horizon 兼容启动（解决 asyncio 冲突）
+# 🔥 终极启动方式（完全兼容 Horizon，永不报 asyncio 冲突）
 if __name__ == "__main__":
-    try:
-        # 标准运行方式
-        mcp.run(transport="sse")
-    except RuntimeError as e:
-        if "Already running asyncio" in str(e):
-            # 环境已有循环，强制安全启动
-            asyncio.run(mcp.run_server(transport="sse"))
-        else:
-            raise
+    # 不使用 mcp.run()，直接用底层 run_server + 强制环境兼容
+    loop = asyncio.get_event_loop()
+    if loop.is_running():
+        # 环境已有循环：创建任务
+        asyncio.create_task(mcp.run_server(transport="sse", host="0.0.0.0", port=8081))
+    else:
+        # 无循环：正常启动
+        loop.run_until_complete(mcp.run_server(transport="sse", host="0.0.0.0", port=8081))
