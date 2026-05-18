@@ -59,9 +59,6 @@ async def list_feeds() -> str:
     return json.dumps(feeds, ensure_ascii=False, indent=2)
 
 
-app = mcp.sse_app()
-
 if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run("server:app", host="0.0.0.0", port=8082)
+    # 直接用 mcp.run 启动 HTTP 服务，满足你的要求
+    mcp.run(transport="http", host="0.0.0.0", port=8082)
