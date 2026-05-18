@@ -2,13 +2,13 @@
 
 import json
 from typing import Optional
+import asyncio
 
 from mcp.server.fastmcp import FastMCP
 
 from rss_fetcher import fetch_single_feed, fetch_multiple_feeds, load_feeds_config
 
 mcp = FastMCP("RSS News Fetcher")
-
 
 @mcp.tool()
 async def fetch_rss(url: str, limit: int = 10) -> str:
@@ -20,7 +20,6 @@ async def fetch_rss(url: str, limit: int = 10) -> str:
     """
     result = await fetch_single_feed(url=url, limit=limit)
     return json.dumps(result, ensure_ascii=False, indent=2)
-
 
 @mcp.tool()
 async def fetch_all_feeds(
@@ -39,7 +38,6 @@ async def fetch_all_feeds(
     )
     return json.dumps(list(results), ensure_ascii=False, indent=2)
 
-
 @mcp.tool()
 async def fetch_custom_feeds(urls: list[str], limit_per_feed: int = 5) -> str:
     """从自定义的 RSS URL 列表批量获取文章。
@@ -51,14 +49,24 @@ async def fetch_custom_feeds(urls: list[str], limit_per_feed: int = 5) -> str:
     results = await fetch_multiple_feeds(urls=urls, limit_per_feed=limit_per_feed)
     return json.dumps(list(results), ensure_ascii=False, indent=2)
 
-
 @mcp.tool()
 async def list_feeds() -> str:
     """列出所有预配置的 RSS 源信息（名称、分类、URL）。"""
     feeds = load_feeds_config()
     return json.dumps(feeds, ensure_ascii=False, indent=2)
 
+# ----------------- 修复部分 -----------------
+# 云函数/Lambda 入口（必须加）
+def handler(event, context):
+    try:
+        # 获取已存在的事件循环，不新建！
+        loop = asyncio.get_event_loop()
+        # 后台启动 MCP 服务，不阻塞
+        loop.create_task(mcp.run_server(transport="http", host="0.0.0.0", port=8082))
+        return {"status": "success", "message": "RSS MCP server started"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
 
+# 本地运行（保留，方便你测试）
 if __name__ == "__main__":
-    # 直接用 mcp.run 启动 HTTP 服务，满足你的要求
     mcp.run(transport="http", host="0.0.0.0", port=8082)
